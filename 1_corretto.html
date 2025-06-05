@@ -1,0 +1,938 @@
+
+<!DOCTYPE html>
+
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Corso Intelligenza Artificiale per Principianti</title>
+<style>
+    :root {
+      --primary: #1a68e3;
+      --secondary: #fff;
+      --bg: #f5f8fd;
+      --accent: #dbeafe;
+      --danger: #ef4444;
+      --success: #14b8a6;
+      --warning: #f59e42;
+      --gray: #333;
+      --radius: 10px;
+      --transition: .2s;
+    }
+    body {
+      font-family: 'Segoe UI', Verdana, Geneva, Tahoma, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      color: var(--gray);
+      padding:0;
+    }
+    .container {
+      max-width: 850px;
+      margin: 88px auto 48px auto;
+      background: var(--secondary);
+      box-shadow: 0 4px 24px #0001, 0 1.5px 0 var(--accent);
+      border-radius: var(--radius);
+      padding: 28px 32px 18px 32px;
+    }
+    nav#sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      background: var(--secondary);
+      box-shadow: 2px 0 8px #0001;
+      width: 230px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 36px;
+      border-radius: 0 24px 24px 0;
+    }
+    nav#sidebar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      letter-spacing: 1px;
+      padding-left: 26px;
+      margin-bottom: 26px;
+      white-space: nowrap;
+    }
+    nav#sidebar ul {
+      list-style: none;
+      padding: 0 0 0 12px;
+      margin: 0;
+      flex: 1;
+    }
+    nav#sidebar li {
+      margin-bottom: 7px;
+    }
+    nav#sidebar a {
+      color: var(--gray);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 7px 22px;
+      border-radius: 6px;
+      display: block;
+      transition: background var(--transition), color var(--transition);
+    }
+    nav#sidebar a.active, nav#sidebar a:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    .content-section {
+      display: none;
+      animation: fadein .7s;
+    }
+    .content-section.active {
+      display: block;
+    }
+    @keyframes fadein {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    .section-title {
+      font-size: 2.1rem;
+      color: var(--primary);
+      margin-bottom: 0.15em;
+    }
+    .section-subtitle {
+      color: #2563eb;
+      font-size: 1.13em;
+      margin-bottom: .8em;
+      letter-spacing: 0.3px;
+    }
+    .box, .prompt-box, .protips-box, .warning-box, .curiosity-box, .case-box {
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin: 16px 0;
+      line-height: 1.5;
+    }
+    .prompt-box {
+      background: #e0e7ff;
+      border-left: 5px solid var(--primary);
+    }
+    .protips-box {
+      background: #e7f9f5;
+      border-left: 5px solid var(--success);
+    }
+    .warning-box {
+      background: #ffeded;
+      border-left: 5px solid var(--danger);
+    }
+    .curiosity-box {
+      background: #fef7dd;
+      border-left: 5px solid var(--warning);
+    }
+    .case-box {
+      background: #dbeafe;
+      border-left: 5px solid var(--primary);
+      font-size: 1.01em;
+    }
+    .exercise {
+      background: #fffaf4;
+      padding: 13px 18px;
+      border-radius: 6px;
+      box-shadow: 0 1px 0 #e6e4da;
+      margin: 18px 0;
+      border-left: 5px solid #fbbf24;
+    }
+    .buttons-nav {
+      display: flex;
+      justify-content: space-between;
+      margin: 32px 0 10px 0;
+      gap: 10px;
+    }
+    .nav-btn {
+      background: var(--primary);
+      color: var(--secondary);
+      padding: 9px 24px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background var(--transition);
+      font-weight: 600;
+      letter-spacing: .4px;
+      min-width: 90px;
+    }
+    .nav-btn:disabled {
+      background: #d3e0f7;
+      cursor: not-allowed;
+      color: #98a8c3;
+    }
+    @media (max-width:900px) {
+      .container { margin-left:220px; max-width:99vw; }
+      nav#sidebar { width:180px; }
+      nav#sidebar .logo { font-size:1.2rem; }
+    }
+    @media (max-width:700px) {
+      .container { margin-left:0;padding:13px 0 4px 0;max-width:99vw;}
+      nav#sidebar { position:sticky; top:0;width:100vw;background:var(--secondary);border-radius:0 0 15px 15px;height:auto;flex-direction:row;padding:0;border-right:0;box-shadow:0 3px 18px #0001;}
+      nav#sidebar .logo {margin:0 12px 0 9px;padding:0 0 0 3px;}
+      nav#sidebar ul {display:flex;padding:0;margin:0 2px 0 0;}
+      nav#sidebar li {margin:0 7px 0 0;}
+    }
+    @media (max-width:450px) {
+      .section-title { font-size:1.3em;}
+      .container {padding-left:2vw;padding-right:2vw;}
+    }
+	nav#sidebar {
+    overflow-y: auto;
+    }
+    @media (max-height: 700px) {
+      nav#sidebar {
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+    }
+
+	
+  </style>
+</head>
+<body>
+<nav id="sidebar">
+<span class="logo">🧠 Corso IA Base</span>
+<ul>
+<li><a class="active" data-section="1" href="#">1. Introduzione</a></li>
+<li><a data-section="2" href="#">2. Cos’è l’IA</a></li>
+<li><a data-section="3" href="#">3. Storia dell’IA</a></li>
+<li><a data-section="4" href="#">4. Machine Learning</a></li>
+<li><a data-section="5" href="#">5. Deep Learning</a></li>
+<li><a data-section="6" href="#">6. Prompt &amp; Interazione</a></li>
+<li><a data-section="7" href="#">7. Etica &amp; Best Practice</a></li>
+<li><a data-section="8" href="#">8. Applicazioni IA</a></li>
+<li><a data-section="9" href="#">9. IA nella Sanità</a></li>
+<li><a data-section="10" href="#">10. IA e Arte</a></li>
+<li><a data-section="11" href="#">11. IA nei Trasporti</a></li>
+<li><a data-section="12" href="#">12. IA nell’Istruzione</a></li>
+<li><a data-section="13" href="#">13. Chatbot &amp; LLM</a></li>
+<li><a data-section="14" href="#">14. Prompt engineering</a></li>
+<li><a data-section="15" href="#">15. Esempi di Prompt</a></li>
+<li><a data-section="16" href="#">16. Ruoli &amp; Roleplay</a></li>
+<li><a data-section="17" href="#">17. Errori comuni</a></li>
+<li><a data-section="18" href="#">18. Privacy &amp; IA</a></li>
+<li><a data-section="19" href="#">19. Esercizi pratici</a></li>
+<li><a data-section="20" href="#">20. Risorse &amp; Conclusioni</a></li>
+</ul>
+<a class="sidebar-link" data-section="22" href="#">22. IA e Sostenibilità</a><a class="sidebar-link" data-section="23" href="#">23. IA e Diritto</a><a class="sidebar-link" data-section="24" href="#">24. IA e Marketing</a><a class="sidebar-link" data-section="25" href="#">25. Quiz Interattivi</a><a class="sidebar-link" data-section="26" href="#">26. Prompt Avanzati</a><a class="sidebar-link" data-section="27" href="#">27. Personalizzazione per Target Specifici</a><a class="sidebar-link" data-section="28" href="#">28. Risorse Aggiornate</a></nav>
+<div class="container" id="main-content">
+<!-- SEZIONE 1 - INTRODUZIONE -->
+<section class="content-section active" id="section-1">
+<div class="section-title">🧑‍💻 Benvenuto nel Corso sull’Intelligenza Artificiale</div>
+<div class="section-subtitle">Cos’è questo corso, a chi si rivolge e cosa imparerai</div>
+<p>
+      Questo corso è pensato per chiunque voglia capire davvero cos’è l’Intelligenza Artificiale, come funziona e come usarla oggi, <b>senza conoscenze tecniche avanzate</b>! 
+      Attraverso esempi semplici, prompt reali, esercizi guidati e focus sulle applicazioni concrete, imparerai passo dopo passo termini chiave, strumenti moderni e best practice per interagire con la IA in modo efficace e sicuro.
+    </p>
+<div class="protips-box">
+<b>Pro Tip:</b> Ogni sezione presenta casi pratici, box con prompt già pronti e avvisi per sfruttare al meglio la IA. Naviga liberamente o segui il percorso consigliato!
+    </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Sapevi che alcune IA generano già immagini, musica e perfino video su misura? Conoscerai i principali strumenti disponibili!
+    </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+      Scrivi in una frase la tua curiosità principale sull’intelligenza artificiale. Qual è la domanda che speri trovi risposta in questo corso?
+    </div>
+<div class="buttons-nav">
+<button class="nav-btn" disabled="">Indietro</button>
+<button class="nav-btn" data-next="2">Avanti</button>
+</div>
+</section>
+<!-- SEZIONE 2 - COS'E' L'IA -->
+<section class="content-section" id="section-2">
+<div class="section-title">🤖 Cos’è l’Intelligenza Artificiale?</div>
+<div class="section-subtitle">Definizioni, esempi e sfatare i miti</div>
+<p>
+      L’<b>Intelligenza Artificiale (IA)</b> è una branca dell’informatica che si occupa di studiare e realizzare sistemi e programmi in grado di svolgere compiti che, fino a pochi anni fa, richiedevano l’intelligenza umana.<br/>
+      Questi compiti includono: comprendere linguaggi, risolvere problemi, riconoscere immagini e suoni, fare previsioni e molto altro.<br/>
+<br/>
+<b>Esempio pratico:</b> Quando chiedi a un assistente vocale “Che tempo farà domani?”, c’è della IA dietro che comprende la domanda e cerca la risposta.
+    </p>
+<div class="prompt-box">
+<b>Prompt di esempio:</b><br/>
+<i>“Spiegami l’Intelligenza Artificiale usando una metafora semplice.”</i><br/>
+<small>→ Risposta IA: “L’intelligenza artificiale è come un cervello elettronico che ‘impara’ osservando tanti esempi, proprio come impariamo noi dalle esperienze.”</small>
+</div>
+<div class="protips-box">
+<b>Pro Tip:</b> Quando chiedi qualcosa a una IA, usa frasi chiare e fornisci dettagli utili. Più dettagli dai, più la risposta sarà precisa!
+    </div>
+<div class="warning-box">
+<b>Attenzione:</b> L’IA NON è “magica” e non capisce o pensa come una persona. È brava dove c’è tanta informazione e compiti ben definiti.
+    </div>
+<div class="exercise">
+<b>Esercizio:</b> <br/>
+      Dai il tuo esempio di IA che hai usato (o visto) di recente! Può essere il filtro spam delle email, un traduttore automatico, i suggerimenti di Netflix…
+    </div>
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="1">Indietro</button>
+<button class="nav-btn" data-next="3">Avanti</button>
+</div>
+</section>
+<!-- SEZIONE 3 - STORIA DELL'IA -->
+<section class="content-section" id="section-3">
+<div class="section-title">📜 Breve Storia dell’Intelligenza Artificiale</div>
+<div class="section-subtitle">Tutte le tappe principali: dalla teoria alla realtà</div>
+<p>
+      L’IA ha una storia affascinante e ricca di scoperte!<br/>
+<b>Alcuni momenti chiave:</b>
+<ul>
+<li><b>1950</b> – Alan Turing propone il “gioco dell’imitazione” (Test di Turing).</li>
+<li><b>1956</b> – Nasce il termine “Artificial Intelligence” alla conferenza di Dartmouth.</li>
+<li><b>Anni ‘80</b> – Primi sistemi esperti: IA che aiuta medici e industrie.</li>
+<li><b>1997</b> – Deep Blue (IBM) batte il campione di scacchi Garry Kasparov.</li>
+<li><b>2011</b> – Watson di IBM vince a Jeopardy!</li>
+<li><b>2016</b> – AlphaGo di Google batte il campione mondiale di Go.</li>
+<li><b>2022+</b> – Le IA generative producono testi, immagini e video realistici.</li>
+</ul>
+</p>
+<div class="curiosity-box">
+<b>Curiosità:</b> Sei qui in un momento unico! Le IA generative (come ChatGPT) sono una rivoluzione recente: la tua esperienza di apprendimento è più attuale che mai.
+    </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+      Cerca online “Test di Turing”: spiega con parole tue di cosa si tratta e perché è ancora attuale nella valutazione dell’intelligenza delle macchine.
+    </div>
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="2">Indietro</button>
+<button class="nav-btn" data-next="4">Avanti</button>
+</div>
+</section>
+<!-- SEZIONE 4 - MACHINE LEARNING -->
+<section class="content-section" id="section-4">
+<div class="section-title">📊 Machine Learning per Tutti</div>
+<div class="section-subtitle">Quando le macchine imparano davvero dai dati!</div>
+<p>
+      Il <b>Machine Learning (ML)</b> è oggi il cuore dell’IA moderna.<br/>
+<br/>
+<b>Cos’è?</b> È il ramo dell’IA che consente ai sistemi di “imparare” e migliorare dai dati e dagli esempi (senza essere programmati in modo esplicito per ogni attività).
+    </p>
+<div class="prompt-box">
+<b>Prompt di esempio:</b> <br/>
+<i>“Spiegami il machine learning come faresti con un bambino di 8 anni.”</i>
+</div>
+<div class="case-box">
+<b>Caso reale:</b> I suggerimenti di video su YouTube funzionano grazie a modelli di ML che studiano ciò che ti piace o guardi spesso.
+    </div>
+<div class="protips-box">
+<b>Pro Tip:</b> I modelli più “intelligenti” non sono quelli che hanno più regole, ma quelli che sanno imparare dagli errori!
+    </div>
+<div class="exercise">
+<b>Esercizio:</b> <br/>
+      Pensa a due situazioni dove, secondo te, il machine learning potrebbe aiutare (ad esempio: prevedere le malattie, consigliare libri, organizzare il traffico...)
+    </div>
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="3">Indietro</button>
+<button class="nav-btn" data-next="5">Avanti</button>
+</div>
+</section>
+<!-- SEZIONE 5 - DEEP LEARNING E RETI NEURALI -->
+<section class="content-section" id="section-5">
+<div class="section-title">🌐 Deep Learning &amp; Reti Neurali</div>
+<div class="section-subtitle">Come “pensano” le IA più moderne</div>
+<p>
+      Il <b>Deep Learning</b> è una tecnica avanzata del machine learning che si ispira al funzionamento del cervello umano.<br/>
+      Utilizza strutture complesse chiamate <b>reti neurali artificiali</b> che apprendono a riconoscere schemi molto complessi (ad esempio, distinguere il volto di una persona in una foto).
+    </p>
+<div class="prompt-box">
+<b>Prompt di esempio:</b><br/>
+<i>“Spiegami cosa sono le reti neurali artificiali con un esempio di vita vera.”</i>
+<br/>
+<small>→ Risposta IA: “Sono come una rete di lampadine, dove ogni lampadina si accende o spegne a seconda dei segnali che riceve dalla rete.”</small>
+</div>
+<div class="case-box">
+<b>Caso reale:</b> Le app che traducono la voce immediatamente usano reti neurali profonde per capire e “parlare” in tante lingue!
+    </div>
+<div class="protips-box">
+<b>Pro Tip:</b> I modelli di deep learning imparano meglio quando hanno tantissimi dati diversi e variegati.
+    </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcune reti neurali moderne hanno miliardi di parametri, ben più di un cervello di topo ma ancora lontane dal cervello umano!
+    </div>
+<div class="exercise">
+<b>Esercizio:</b> <br/>
+      Immagina di dover “istruire una rete neurale” a distinguere tra un gatto e un cane partendo da tante foto. Quali sono le difficoltà che incontri?
+    </div>
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="4">Indietro</button>
+<button class="nav-btn" data-next="6">Avanti</button>
+</div>
+</section>
+<!-- SEZIONE 6 - PROMPT DI ESEMPIO E GUIDA INTERAZIONE -->
+<section class="content-section" id="section-6">
+<div class="section-title">💬 Prompt di esempio e guida all’interazione</div>
+<div class="section-subtitle">Scrivere richieste efficaci e capire le risposte</div>
+<p>
+      Interagire con una IA – come questa! – richiede di scrivere (“promuovere”) domande e richieste nel modo migliore.<br/>
+      Un <b>prompt</b> è tutto ciò che digiti o dici alla IA per ottenere una risposta utile, coerente e chiara.
+    </p>
+<div class="protips-box">
+<b>Pro Tip:</b><br/>
+<ul>
+<li>Fornisci sempre contesto e dettagli (“Crea una lista di vantaggi dell’IA nell’istruzione per un articolo di blog”).</li>
+<li>Specifica formato e tono: “Rispondi utilizzando max 5 punti elenco, in tono amichevole”.</li>
+<li>Poni domande di approfondimento (“Fammi esempio pratico”, “Spiega con analogie”).</li>
+<li>Chiedi revisioni e migliorie (“Riscrivi la risposta rendendola adatta a bambini di 10 anni”).</li>
+</ul>
+</div>
+<div class="prompt-box">
+<b>Esempi di prompt:</b>
+<ul>
+<li>“Scrivi un riassunto semplice della storia dell’IA, max 100 parole.”</li>
+<li>“Crea 3 idee di attività con IA per una classe di scuola primaria.”</li>
+<li>“Traduci ‘Intelligenza artificiale per tutti’ in francese.”</li>
+<li>“Genera 5 titoli adatti a un blog sulla sicurezza informatica.”</li>
+<li>“Simula una breve intervista sull’IA: tu sei un esperto, io ti intervisto.”</li>
+<li>“Elenca errori comuni che fanno i principianti quando scrivono prompt per IA.”</li>
+</ul>
+</div>
+<div class="warning-box">
+<b>Attenzione:</b> Più il prompt è vago, più la risposta sarà generica. Prova a “testare” la IA con versioni sempre più specifiche della tua domanda!
+    </div>
+<div class="exercise">
+<b>Esercizio pratico:</b><br/>
+      Prendi un tuo esempio reale: scrivi un prompt che useresti in classe, al lavoro o per organizzare la giornata. Prova a renderlo più preciso e confronta le differenze!
+    </div>
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="5">Indietro</button>
+<button class="nav-btn" data-next="7">Avanti</button>
+</div>
+</section>
+<!-- SEZIONE 7 - ETICA, BEST PRACTICE, USI SICURI -->
+<section class="content-section" id="section-7">
+<div class="section-title">🛡️ Etica, Usi Sicuri e Best Practice</div>
+<div class="section-subtitle">Come si usa la IA responsabilmente? Buone pratiche e avvertimenti</div>
+<p>
+      L’uso responsabile dell’IA è fondamentale. Saperne valutare rischi, limiti e potenzialità protegge te e chi ti circonda (a scuola, sul lavoro, online).
+    </p>
+<div class="protips-box">
+<b>Best practice:</b>
+<ul>
+<li>Non affidarti “ciecamente” alle risposte: controlla sempre le informazioni importanti.</li>
+<li>Evita di inserire dati personali, sensibili o riservati nei prompt.</li>
+<li>Ricorda che la IA non ha emozioni né intenzioni: interpreta i risultati con spirito critico.</li>
+<li>Segnala errori, bias o stereotipi che trovi nelle risposte: aiutano a migliorare!</li>
+</ul>
+</div>
+<div class="prompt-box">
+<b>Prompt di esempio “sicuri”:</b>
+<ul>
+<li>“Fai un riassunto di questa fonte, senza inserire dati sensibili.”</li>
+<li>“Elenca i rischi nell’usare IA per scrivere compiti scolastici.”</li>
+<li>“Suggerisci linee guida etiche per l’uso dell’IA in azienda.”</li>
+</ul>
+</div>
+<div class="warning-box">
+<b>Attenzione:</b> L’IA può commettere errori (anche grossolani) e, se allenata male, amplificare pregiudizi e stereotipi: rimani sempre vigile!
+    </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcuni Paesi e aziende hanno già un “codice etico per l’IA” che regola ciò che si può/deve fare oppure no con questi strumenti.
+    </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+      Prova a scrivere tu stesso delle regole “etiche” che adotteresti usando IA nella vita quotidiana (scuola, lavoro, hobby).
+    </div>
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="6">Indietro</button>
+<button class="nav-btn" data-next="8">Avanti</button>
+</div>
+</section>
+<!-- CONTENUTO DI PAGINE 8-20 (SCAFFOLDING) -->
+<!-- Le pagine 8-20 sono impostate come placeholder: puoi completarle in seguito con lo stesso stile -->
+<!-- Esempio (puoi copiarli per espandere ogni tema con struttura didattica, prompt, avvertimenti, curiosità, esercizi, etc.) -->
+<section class="content-section" id="section-8">
+<div class="section-title">🌍 Applicazioni dell’IA nella vita reale</div>
+<p>L’intelligenza artificiale viene oggi utilizzata in moltissimi contesti, spesso senza che ce ne accorgiamo. Alcune delle applicazioni più rilevanti includono:</p>
+<ul>
+<li><b>Sanità:</b> IA per analizzare esami medici, diagnosticare patologie e prevedere rischi clinici.</li>
+<li><b>Banche e finanza:</b> Sistemi antifrode, gestione del rischio, assistenti virtuali per clienti.</li>
+<li><b>Retail:</b> Personalizzazione di offerte, assistenza nei negozi online, analisi dei comportamenti.</li>
+<li><b>Istruzione:</b> Piattaforme intelligenti per l’apprendimento personalizzato.</li>
+<li><b>Servizi pubblici:</b> Chatbot per il supporto cittadino, gestione dei documenti e automatismi negli uffici.</li>
+</ul>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcuni comuni italiani utilizzano già chatbot per rispondere alle domande dei cittadini su tasse, scadenze, moduli e prenotazioni.
+    </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+      Elenca almeno 3 applicazioni dell’IA che hai sperimentato nella tua vita personale o lavorativa. Quale ti ha colpito di più?
+    </div>
+<div class="section-subtitle">IA che cambia sanità, arte, trasporti, scuola e lavoro</div>
+<p>
+      Dalla diagnosi precoce in medicina alle auto a guida automatica, l’IA sta entrando in ogni aspetto della vita quotidiana.<br/>
+<i>Prova a trovare un’applicazione “sorprendente” o innovativa di IA vicino a te!</i>
+</p>
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="7">Indietro</button>
+<button class="nav-btn" data-next="9">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-9">
+<div class="section-title">🏥 IA nella Sanità</div>
+<div class="section-subtitle">Tecnologie intelligenti al servizio della salute</div>
+<p>Nel settore sanitario l’IA può assistere medici, infermieri e pazienti migliorando diagnosi, monitoraggi e ottimizzazione delle cure.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • Analisi automatica di immagini mediche (es. radiografie, TAC)<br/>
+    • Sistemi predittivi per ricoveri e malattie croniche<br/>
+    • Assistenti virtuali per il triage nei pronto soccorso
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcuni ospedali usano IA per prevedere il rischio di complicanze post-operatorie in tempo reale.
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> L’IA in sanità è sempre supervisionata da personale umano: non sostituisce il medico, ma lo aiuta.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Cerca online un caso studio sull’uso di IA in ospedale. Riassumilo in 5 righe.
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="8">Indietro</button>
+<button class="nav-btn" data-next="10">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-10">
+<div class="section-title">🎨 IA e Arte / Creatività</div>
+<div class="section-subtitle">Quando la tecnologia collabora con l’estro umano</div>
+<p>L’IA può generare immagini, musica, video, testi, sceneggiature e aiutare nel processo creativo.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • Generazione di immagini con descrizioni testuali<br/>
+    • Composizione musicale automatica<br/>
+    • Scrittura assistita di libri, sceneggiature o poesie
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Ci sono già canzoni interamente scritte e cantate da IA che hanno milioni di ascolti!
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Usa l’IA come spunto creativo, non come sostituto: il tuo tocco personale è insostituibile.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Prova a scrivere un prompt creativo per generare un’immagine artistica su un tema a tua scelta.
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="9">Indietro</button>
+<button class="nav-btn" data-next="11">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-11">
+<div class="section-title">🚗 IA nei Trasporti</div>
+<div class="section-subtitle">Sistemi intelligenti per muoversi meglio e in sicurezza</div>
+<p>Dal traffico cittadino ai camion autonomi, l’IA guida sempre più spesso… anche letteralmente!</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • Sistemi di guida autonoma<br/>
+    • Ottimizzazione delle rotte logistiche e spedizioni<br/>
+    • Previsione del traffico e regolazione dei semafori intelligenti
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcuni autobus a guida autonoma sono già in funzione in città europee a scopo sperimentale.
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Il trasporto del futuro sarà integrato con IA, IoT e sensori ambientali.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Pensa a un problema nei trasporti della tua città. Come potrebbe l’IA aiutare a risolverlo?
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="10">Indietro</button>
+<button class="nav-btn" data-next="12">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-12">
+<div class="section-title">🏫 IA nell’Istruzione</div>
+<div class="section-subtitle">Un apprendimento più personalizzato e inclusivo</div>
+<p>L’intelligenza artificiale sta trasformando la didattica rendendola più flessibile, adattiva e accessibile.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • Tutor virtuali che spiegano argomenti difficili<br/>
+    • Verifica automatica degli esercizi e suggerimenti personalizzati<br/>
+    • Traduzioni e supporto multilingua per studenti stranieri
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcune IA sono in grado di riconoscere lo stile di apprendimento di uno studente e adattarsi in tempo reale.
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Come docente o studente, puoi usare IA per creare quiz, riassunti, schede o piani di studio.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Progetta un’attività in classe con IA: che obiettivo ha? Che strumenti useresti?
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="11">Indietro</button>
+<button class="nav-btn" data-next="13">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-13">
+<div class="section-title">🤖 Chatbot &amp; LLM (Large Language Models)</div>
+<div class="section-subtitle">Come funzionano e perché sono così potenti</div>
+<p>I chatbot avanzati (come ChatGPT) sono basati su LLM: modelli linguistici addestrati su enormi quantità di testi per generare risposte coerenti.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • Chatbot aziendali per il supporto clienti<br/>
+    • Assistenti virtuali per prenotazioni o richieste<br/>
+    • Risposte automatiche a FAQ complesse
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcuni LLM sono stati addestrati su centinaia di miliardi di parole.
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Quando usi un chatbot, dai contesto chiaro e chiedi approfondimenti o esempi per risposte migliori.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Interagisci con un chatbot: prova a fargli spiegare un argomento difficile con parole semplici.
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="12">Indietro</button>
+<button class="nav-btn" data-next="14">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-14">
+<div class="section-title">📝 Prompt Engineering</div>
+<div class="section-subtitle">L’arte di fare domande giuste all’IA</div>
+<p>Scrivere buoni prompt è fondamentale per ottenere risposte utili e precise. Questo processo è noto come prompt engineering.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • Prompt generico: “Scrivi un testo sull’energia” → Risposta generica<br/>
+    • Prompt migliorato: “Scrivi 3 vantaggi dell’energia solare, in stile informativo per un volantino.” → Risposta mirata
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcuni professionisti lavorano solo come prompt engineer!
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Sii specifico, dai istruzioni sul formato, tono e pubblico.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Scrivi un prompt su un argomento che conosci. Miglioralo in 3 versioni rendendolo sempre più chiaro e mirato.
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="13">Indietro</button>
+<button class="nav-btn" data-next="15">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-15">
+<div class="section-title">💡 Esempi di Prompt</div>
+<div class="section-subtitle">Idee già pronte da provare subito</div>
+<p>Ecco una raccolta di prompt utili che puoi usare o modificare per i tuoi scopi personali o professionali.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • “Crea un piano settimanale di studio per l’esame di diritto.”<br/>
+    • “Scrivi una presentazione PowerPoint di 5 slide sull’IA per studenti delle superiori.”<br/>
+    • “Genera un contratto base di collaborazione occasionale.”
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Esistono repository online con migliaia di prompt condivisi dagli utenti.
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Copia i prompt migliori in un tuo file personale: ti saranno utilissimi nel tempo.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Progetta 2 prompt per il tuo lavoro quotidiano e 2 per il tempo libero o hobby.
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="14">Indietro</button>
+<button class="nav-btn" data-next="16">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-16">
+<div class="section-title">🎭 Ruoli e Roleplay nella IA</div>
+<div class="section-subtitle">Far interpretare alla IA un ruolo utile o esperto</div>
+<p>Puoi chiedere alla IA di comportarsi come un personaggio, un esperto o un consulente per simulare dialoghi, interviste, diagnosi o formazione.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • “Agisci come consulente legale: analizza questo testo.”<br/>
+    • “Fingi di essere un insegnante che spiega l’economia a un quindicenne.”<br/>
+    • “Comportati come uno psicologo motivazionale e dammi consigli per superare la timidezza.”
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcuni corsi universitari usano IA per simulare pazienti o clienti.
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Specificare il ruolo migliora la coerenza e lo stile della risposta.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Scrivi un prompt in cui chiedi alla IA di assumere un ruolo utile al tuo lavoro o studio.
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="15">Indietro</button>
+<button class="nav-btn" data-next="17">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-17">
+<div class="section-title">⚠️ Errori Comuni nell’Uso IA</div>
+<div class="section-subtitle">Cosa evitare quando interagisci con un modello</div>
+<p>Ci sono alcune trappole ricorrenti nell’uso dell’IA. Riconoscerle ti aiuta a evitarle e a usarla con maggiore efficacia.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • Usare prompt vaghi o troppo brevi<br/>
+    • Aspettarsi verità assolute da una IA<br/>
+    • Non rileggere o validare le risposte<br/>
+    • Scambiare IA per esseri senzienti
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> L’IA può ‘inventare’ citazioni o dati plausibili ma falsi, se non controlli.
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Verifica sempre fonti e fatti se usi IA per lavoro, scuola o contenuti pubblici.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Rifletti su un errore che potresti fare usando IA. Come lo eviteresti?
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="16">Indietro</button>
+<button class="nav-btn" data-next="18">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-18">
+<div class="section-title">🔒 Privacy e IA</div>
+<div class="section-subtitle">Come proteggere dati e informazioni</div>
+<p>Ogni volta che usi un’IA, condividi informazioni. È essenziale sapere cosa si può fare e cosa no.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • Non inserire dati sensibili (CF, numeri di telefono, info bancarie)<br/>
+    • Attenzione a testi aziendali riservati nei prompt<br/>
+    • Preferisci strumenti IA con regolamenti europei (GDPR)
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> Alcuni strumenti IA cancellano i dati subito, altri li usano per migliorarsi. Leggi sempre la policy!
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Tratta i prompt come email pubbliche: scrivi solo ciò che condivideresti in sicurezza.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Scrivi 3 regole personali da seguire quando usi IA per proteggere la tua privacy.
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="17">Indietro</button>
+<button class="nav-btn" data-next="19">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-19">
+<div class="section-title">📝 Esercizi pratici</div>
+<div class="section-subtitle">Metti alla prova ciò che hai imparato</div>
+<p>Questa sezione raccoglie esercizi vari per usare l’IA nei contesti reali.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • Crea una guida introduttiva su IA per i tuoi colleghi<br/>
+    • Progetta una simulazione tra te e una IA che fa da formatore<br/>
+    • Scrivi 5 prompt per automatizzare un’attività d’ufficio
+    
+        </div>
+<div class="curiosity-box">
+<b>Curiosità:</b> La pratica costante ti rende più veloce e preciso nell’uso dell’IA.
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Ritorna su questi esercizi dopo una settimana: vedrai miglioramenti nel tuo approccio.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Completa almeno 2 esercizi proposti. Poi prova a crearne uno tutto tuo!
+        </div>
+<!-- ... completa in stile ... -->
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="18">Indietro</button>
+<button class="nav-btn" data-next="20">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-20">
+<div class="section-title">📚 Risorse e Conclusioni</div>
+<div class="section-subtitle">Complimenti! Hai completato il corso base di IA.</div>
+<p>Rileggi le sezioni chiave, prova gli esercizi proposti, inventa nuovi prompt e… porta il potere dell’IA nella tua quotidianità! Torna a questa guida quando vuoi rafforzare la tua comprensione o mostrarla ad amici e colleghi.</p>
+<div class="case-box">
+<b>Casi d’uso:</b><br/>
+          
+    • PromptLibrary.ai – raccolta di prompt categorizzati<br/>
+    • OpenAI Help Center – guida ufficiale<br/>
+    • Futuretools.io – motori di ricerca per strumenti IA
+    
+        </div>
+<div class="protips-box">
+<b>Pro Tip:</b> L’apprendimento non finisce qui! Continua a informarti e a esplorare le applicazioni pratiche dell’IA.
+        </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+          Condividi ciò che hai imparato: insegnare agli altri è il modo migliore per fissare le conoscenze.
+        </div>
+<div class="section-subtitle">Complimenti! Hai completato il corso base di IA.</div>
+<p>
+      Rileggi le sezioni chiave, prova gli esercizi proposti, inventa nuovi prompt e… <b>porta il potere dell’IA nella tua quotidianità!</b><br/>
+      Torna a questa guida quando vuoi rafforzare la tua comprensione o mostrarla ad amici e colleghi.
+    </p>
+<div class="protips-box">
+<b>Pro Tip:</b> L’apprendimento non finisce qui! Continua a informarti e a esplorare le applicazioni pratiche dell’IA.
+    </div>
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="19">Indietro</button>
+<button class="nav-btn" disabled="">Avanti</button>
+</div>
+</section>
+<section class="content-section" id="section-21">
+<div class="section-title">📂 IA per Uffici, Contabilità, Segreteria e Amministrazione</div>
+<div class="section-subtitle">Esempi pratici, prompt utili e scenari reali per il lavoro d’ufficio</div>
+<p>L’intelligenza artificiale può essere un supporto concreto per chi lavora in ambito amministrativo, contabile o segretariale. Ecco alcuni casi reali e prompt utili:</p>
+<div class="case-box">
+<b>📄 Contabilità:</b><br/>
+    Prompt: “Controlla questo estratto conto Excel e segnala anomalie.”<br/>
+    Prompt: “Genera una nota spese mensile a partire da questi movimenti.”
+  </div>
+<div class="case-box">
+<b>📊 Paghe e stipendi:</b><br/>
+    Prompt: “Genera un promemoria con le scadenze mensili per buste paga e contributi.”<br/>
+    Prompt: “Spiega la differenza tra CUD e CU in modo semplice.”
+  </div>
+<div class="case-box">
+<b>📬 Segreteria &amp; comunicazione:</b><br/>
+    Prompt: “Scrivi una email formale per richiedere un certificato.”<br/>
+    Prompt: “Riassumi questa circolare in linguaggio semplice.”
+  </div>
+<div class="case-box">
+<b>🏛️ Associazioni di categoria:</b><br/>
+    Prompt: “Crea un volantino promozionale per un evento formativo con IA.”<br/>
+    Prompt: “Scrivi un comunicato stampa sulle nuove linee guida fiscali.”
+  </div>
+<div class="protips-box">
+<b>Pro Tip:</b> Conserva i prompt più utili e riutilizzali con variazioni: risparmi tempo e migliori l’efficacia!
+  </div>
+<div class="exercise">
+<b>Esercizio:</b><br/>
+    Prova a scrivere un prompt personalizzato che useresti ogni giorno nel tuo lavoro. Ad esempio: “Crea una checklist giornaliera per lo studio commercialista”.
+  </div>
+<div class="buttons-nav">
+<button class="nav-btn" data-prev="20">Indietro</button>
+<button class="nav-btn" disabled="">Avanti</button>
+</div>
+</section><section class="content-section" id="section-22"><div class="section-title">🌱 IA e Sostenibilità</div><div class="section-subtitle">Tecnologia per un futuro più verde</div>
+<div class="case-box">
+<b>Esempi:</b>
+<ul>
+<li>Monitoraggio delle foreste per prevenire la deforestazione illegale.</li>
+<li>Ottimizzazione dei consumi energetici nelle smart grid.</li>
+<li>Previsione e gestione delle risorse idriche.</li>
+</ul></div>
+<div class="exercise"><b>Esercizio:</b><br/>Pensa a un ambito ambientale in cui l’IA potrebbe fare la differenza nella tua città.</div>
+<div class="buttons-nav"><button class="nav-btn" data-prev="21">Indietro</button><button class="nav-btn" data-next="23">Avanti</button></div></section><section class="content-section" id="section-23"><div class="section-title">⚖️ IA e Diritto</div><div class="section-subtitle">Strumenti per il settore legale</div>
+<div class="case-box"><b>Casi d’uso:</b>
+<ul>
+<li>Analisi di grandi quantità di documenti legali.</li>
+<li>Automazione delle pratiche burocratiche.</li>
+<li>Supporto nella redazione di contratti.</li>
+</ul></div>
+<div class="exercise"><b>Esercizio:</b><br/>Cerca uno strumento legale basato su IA e descrivi cosa fa.</div>
+<div class="buttons-nav"><button class="nav-btn" data-prev="22">Indietro</button><button class="nav-btn" data-next="24">Avanti</button></div></section><section class="content-section" id="section-24"><div class="section-title">📈 IA e Marketing</div><div class="section-subtitle">Strategie personalizzate grazie ai dati</div>
+<div class="case-box"><b>Casi d’uso:</b>
+<ul>
+<li>Analisi dei dati dei clienti per campagne mirate.</li>
+<li>Ottimizzazione delle strategie di prezzo.</li>
+<li>Automazione del customer service con chatbot.</li>
+</ul></div>
+<div class="exercise"><b>Esercizio:</b><br/>Scrivi un prompt per generare una newsletter automatica settimanale.</div>
+<div class="buttons-nav"><button class="nav-btn" data-prev="23">Indietro</button><button class="nav-btn" data-next="25">Avanti</button></div></section><section class="content-section" id="section-25"><div class="section-title">🧪 Quiz Interattivi</div><div class="section-subtitle">Metti alla prova le tue conoscenze</div>
+<div class="case-box"><b>Quiz:</b>
+<ul>
+<li>Quiz 1: Domande base sull’IA.</li>
+<li>Quiz 2: Applicazioni pratiche.</li>
+<li>Quiz 3: Storia dell’IA.</li>
+</ul></div>
+<div class="exercise"><b>Esercizio:</b><br/>Rispondi al quiz 1 e correggi con l’aiuto di una IA.</div>
+<div class="buttons-nav"><button class="nav-btn" data-prev="24">Indietro</button><button class="nav-btn" data-next="26">Avanti</button></div></section><section class="content-section" id="section-26"><div class="section-title">🎯 Prompt Avanzati</div><div class="section-subtitle">Sfruttare al meglio l’interazione</div>
+<div class="prompt-box"><b>Prompt di esempio:</b>
+<ul>
+<li>“Simula un dialogo con un esperto di IA.”</li>
+<li>“Crea un piano di marketing per una startup.”</li>
+<li>“Analizza un caso legale con riferimenti normativi.”</li>
+</ul></div>
+<div class="exercise"><b>Esercizio:</b><br/>Scegli uno dei prompt e miglioralo in tre versioni.</div>
+<div class="buttons-nav"><button class="nav-btn" data-prev="25">Indietro</button><button class="nav-btn" data-next="27">Avanti</button></div></section><section class="content-section" id="section-27"><div class="section-title">🎯 Target Specifici</div><div class="section-subtitle">Adattare l’IA ai diversi utenti</div>
+<div class="case-box"><b>Adattamenti:</b>
+<ul>
+<li>Studenti: esercizi guidati, quiz semplici.</li>
+<li>Docenti: schede, prompt per lezione.</li>
+<li>Aziende: automazione documenti, report automatici.</li>
+</ul></div>
+<div class="exercise"><b>Esercizio:</b><br/>Adatta un prompt IA per un contesto scolastico e uno aziendale.</div>
+<div class="buttons-nav"><button class="nav-btn" data-prev="26">Indietro</button><button class="nav-btn" data-next="28">Avanti</button></div></section><section class="content-section" id="section-28"><div class="section-title">📚 Risorse Aggiornate</div><div class="section-subtitle">Dove trovare contenuti e strumenti</div>
+<div class="case-box"><b>Risorse utili:</b>
+<ul>
+<li><b>Libro:</b> "Artificial Intelligence: A Modern Approach"</li>
+<li><b>Corso:</b> “Machine Learning” di Andrew Ng</li>
+<li><b>Portali:</b> arXiv, FutureTools.io</li>
+</ul></div>
+<div class="exercise"><b>Esercizio:</b><br/>Visita uno dei siti elencati e annota un’idea utile.</div>
+<div class="buttons-nav"><button class="nav-btn" data-prev="27">Indietro</button><button class="nav-btn" disabled="">Avanti</button></div></section></div>
+<script>
+  // Gestisce la navigazione tra pagine (sezioni)
+  const navLinks = document.querySelectorAll('nav#sidebar a');
+  const sections = document.querySelectorAll('.content-section');
+  const mainContent = document.getElementById('main-content');
+
+  function showSection(id) {
+    sections.forEach(sec => sec.classList.remove('active'));
+    const section = document.getElementById('section-' + id);
+    if (section) section.classList.add('active');
+    navLinks.forEach(link => link.classList.toggle('active', link.dataset.section === id.toString()));
+    window.scrollTo({top:0, left:0, behavior:"auto"});
+  }
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      showSection(link.dataset.section);
+    });
+  });
+
+  // Gestione bottoni avanti/indietro
+  mainContent.addEventListener('click', function(e){
+    if (e.target.classList.contains('nav-btn')) {
+      const next = e.target.dataset.next, prev = e.target.dataset.prev;
+      if (next) showSection(next);
+      if (prev) showSection(prev);
+    }
+  });
+
+  // Responsive: attiva il menu hamburger su mobile (opzionale, se vuoi personalizzare)
+  // <-- Da ampliare se vuoi aggiungere hamburger su schermi piccolissimi
+</script>
+<footer style="text-align:center; font-size:0.9em; margin-top:48px; color:#666;">© Manuele Francescon – Tutti i diritti riservati. I contenuti sono originali o citati nel rispetto del diritto di cronaca e didattica. Alcune risorse esterne sono indicate a scopo educativo.</footer></body>
+</html>
